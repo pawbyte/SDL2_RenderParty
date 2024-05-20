@@ -1,6 +1,6 @@
-# SDL2_Render_Party
+# SDL2_RenderParty
 
-![image](https://raw.githubusercontent.com/pawbyte/SDL2_Render_Party/main/images/sdl2_render_party_logo.png)
+![image](https://github.com/pawbyte/SDL2_RenderParty/blob/main/images/sdl2_renderparty_logo.png?raw=true)
 
 A simple library of extending the current functionality of SDL2 without having to change your includes. Currently supporting RenderQuads, RenderPolygons and more! It's a party a SDL2 Render Party!
 

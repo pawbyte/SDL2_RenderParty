@@ -3,6 +3,5 @@ A simple library of extending the current functionality of SDL2 without having t
 
 Example Project of adding more sides to a rotating polygon rendered drawn with a white color:
 
-![image]([files/Users/jzhang/Desktop/Isolated.png](https://raw.githubusercontent.com/pawbyte/SDL2_Render_Party/main/examples/SDL2_Render_Party_White_Polygon_Test.gif
-))
+![image](https://raw.githubusercontent.com/pawbyte/SDL2_Render_Party/main/examples/SDL2_Render_Party_White_Polygon_Test.gif)
 

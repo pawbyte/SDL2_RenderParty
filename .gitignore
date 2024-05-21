@@ -1,3 +1,13 @@
+# build files
+bin/
+bin/Release/
+bin/Debug/
+build/
+examples/
+obj/
+RenderParty_Example_Project/
+.vscode/
+
 # Prerequisites
 *.d
 

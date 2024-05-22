@@ -140,7 +140,8 @@ int main(int argv, char** args)
         render_triangle_mode_strips = 0,
         render_triangle_mode_fans = 1,
         render_triangle_mode_quads = 2,
-        render_triangle_mode_off = 3,
+        render_triangle_mode_circle = 3,
+        render_triangle_mode_off = 4,
     };
 
 
@@ -355,9 +356,12 @@ int main(int argv, char** args)
         {
             SDL_RenderParty_Quad( sdl_apprenderer, NULL, random_polygon_vertices, true, false );
         }
+        else if( triangle_mode_state == render_triangle_mode_circle)
+        {
+            SDL_RenderParty_Circle( sdl_apprenderer, NULL, center_point, 256, &filled_poly_color, 96, shaped_angle, gfx_effect );
+        }
 
-    //Our triangle_mode_state is just an int.
-    int triangle_mode_state = render_triangle_mode_strips;
+
         /*Ok lets render our next polygon bound to the mouse coordinates
         This polygon uses the shape_size for it's radius, the shape_point_count for it's amount of sides
         */

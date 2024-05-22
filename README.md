@@ -42,6 +42,6 @@ float **SDL2_RenderParty_LengthdirY**( float length, float angle  );
   
 // Renders a Polygon based on the inputted SDL_Vertex vertices. You will need at least 3 vertices for this function.   
 // tex can be left NULL to render colored TriangleFans. If not left blank, please see the texture_effect which is based on the sdl_partyeffect enums   
-**bool SDL_RenderParty_Polygon**( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha = 255, float start_angle, int texture_effect  );   
+**bool SDL_RenderParty_Polygon**( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha, float start_angle, int texture_effect  );   
 
   

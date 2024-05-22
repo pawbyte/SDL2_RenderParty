@@ -49,7 +49,7 @@ SDL_2.0.18 or higher is required!
 extern "C" {
 #endif
 
-const int sdl_party_max_vertex_count = 999999;
+#define sdl_party_max_vertex_count = 999999;
 
 extern bool SDL2_RenderParty_WasInitted;
 
@@ -74,7 +74,7 @@ enum
 
 //  Math related variables
 
-const float sdl_renderparty_math_pi = 3.14159265359;
+#define float sdl_renderparty_math_pi = 3.14159265359;
 const float sdl_renderparty_math_to_radians = 180.f/sdl_renderparty_math_pi;
 const float sdl_renderparty_math_degrees_multiplier = 180.f/sdl_renderparty_math_pi;
 const float sdl_renderparty_math_radians_multiplier = sdl_renderparty_math_pi/180.f;

@@ -29,84 +29,92 @@ SOFTWARE.
 
 */
 
-#ifndef sd2_renderparty_ex_h
-#define sd2_renderparty_ex_h
 
-#define SDL2_RENDERPARTY_VERSION_MAJOR 1
-#define SDL2_RENDERPARTY_MINOR 1
-#define SDL2_RENDERPARTY_PATCH 2
+#ifndef SDL2_RENDERPARTY_HEADER
+#define SDL2_RENDERPARTY_HEADER
 
-#include <stdbool.h>
-#include "SDL2/SDL.h"
+#define SDL2_RENDERPARTY_IMPLEMENTATION
 
-/*
-Requires SDL_RenderGeometry, which was introduced in SDL 2.0.18
-
-SDL_2.0.18 or higher is required!
-*/
-
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
-#define sdl_party_max_vertex_count 999999
+    #define SDL2_RENDERPARTY_VERSION_MAJOR 1
+    #define SDL2_RENDERPARTY_MINOR 1
+    #define SDL2_RENDERPARTY_PATCH 3
 
-extern bool SDL2_RenderParty_WasInitted;
+    #define SDL2_RENDERPARTY_CIRCLE_POINT_MIN 4
 
-//A giant Vertex list for polygon rendering. This number is rather huge, but if your game/app needs larger polygons just increase this constant...
-extern SDL_Vertex SDL_RenderParty_Vertex_List[sdl_party_max_vertex_count];
-extern bool SDL2_Party_WasInitted;
+    #include <stdbool.h>
+    #include "SDL2/SDL.h"
 
-//  Effects for polygon rendering, some are experimental. Toggle to see which effect works best for your game/app.
+    /*
+    Requires SDL_RenderGeometry, which was introduced in SDL 2.0.18
 
-enum
-{
-    sdl_partyeffect_full = 0,
-    sdl_partyeffect_additive = 1,
-    sdl_partyeffect_subtractive = 2,
-    sdl_partyeffect_inverted =3,
-    sdl_partyeffect_bottom_up = 4,
-    sdl_partyeffect_full_inverted = 5,
-    sdl_partyeffect_none = 6,
-};
+    SDL_2.0.18 or higher is required!
 
 
 
-//  Math related variables
-
-#define float sdl_renderparty_math_pi 3.14159265359
-const float sdl_renderparty_math_to_radians = 180.f/sdl_renderparty_math_pi;
-const float sdl_renderparty_math_degrees_multiplier = 180.f/sdl_renderparty_math_pi;
-const float sdl_renderparty_math_radians_multiplier = sdl_renderparty_math_pi/180.f;
+    */
 
 
-//  Function Declarations
 
-bool SDL2_RenderParty_Init();
-bool SDL2_RenderParty_Quit();
-float SDL2_RenderParty_LengthdirX( float length, float angle  );
-float SDL2_RenderParty_LengthdirY( float length, float angle  );
-bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, bool show_colors, bool update_tex_cords );
-int SDL_RenderParty_Strips(SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, int num_vertices, bool is_closed, int texture_effect, int start_vertice_pos  );
-int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, int num_vertices, int texture_effect , int start_vertice_pos);
-bool SDL_RenderParty_Polygon( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha, float start_angle, int texture_effect, int start_vertice_pos );
+    #define sdl_party_max_vertex_count 999999
+
+    extern SDL_Vertex SDL_RenderParty_Vertex_List[sdl_party_max_vertex_count];
+    extern bool SDL2_Party_WasInitted;
+    extern int SDL2_Party_Circle_Points; //Detailed enough for smaller screens.
+
+    //  Effects for polygon rendering, some are experimental. Toggle to see which effect works best for your game/app.
+
+    enum
+    {
+        sdl_partyeffect_full = 0,
+        sdl_partyeffect_additive = 1,
+        sdl_partyeffect_subtractive = 2,
+        sdl_partyeffect_inverted =3,
+        sdl_partyeffect_bottom_up = 4,
+        sdl_partyeffect_full_inverted = 5,
+        sdl_partyeffect_texture_mapped = 6, // W.I.P
+        sdl_partyeffect_none = 7,
+    };
+
+
+    //  Math related variables
+
+    #define sdl_renderparty_math_pi 3.14159265359
+    const float sdl_renderparty_math_to_radians = 180.f/sdl_renderparty_math_pi;
+    const float sdl_renderparty_math_degrees_multiplier = 180.f/sdl_renderparty_math_pi;
+    const float sdl_renderparty_math_radians_multiplier = sdl_renderparty_math_pi/180.f;
+
+
+    //  Function Declarations
+
+    bool SDL2_RenderParty_Init();
+    bool SDL2_RenderParty_Quit();
+    float SDL2_RenderParty_LengthdirX( float length, float angle  );
+    float SDL2_RenderParty_LengthdirY( float length, float angle  );
+    bool SDL_RenderParty_Circle( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int circle_radius, SDL_Color * circle_colour, int alpha, float start_angle, int texture_effect );
+    int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, int num_vertices, int texture_effect , int start_vertice_pos);
+    bool SDL_RenderParty_Polygon( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha, float start_angle, int texture_effect, int start_vertice_pos );
+    bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, bool show_colors, bool update_tex_cords );
+    bool SDL_RenderParty_SetCirclePoints( int new_circle_points );
+    int SDL_RenderParty_Strips(SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, int num_vertices, bool is_closed, int texture_effect, int start_vertice_pos  );
 
 #ifdef __cplusplus
 }
-#endif // Ends Header File Phase
+#endif
+#endif // SDL2_RENDERPARTY_HEADER
 
-#endif //sd2_renderparty_ex_h
-
-
-#ifndef sdl2_renderparty_implementation_ex_h
-#define sdl2_renderparty_implementation_ex_h
 
 //
 //Implementation Phase
 //
+#if defined(SDL2_RENDERPARTY_IMPLEMENTATION)
 
 SDL_Vertex SDL_RenderParty_Vertex_List[sdl_party_max_vertex_count];
 bool SDL2_Party_WasInitted = false;
+int SDL2_Party_Circle_Points = 32; //Detailed enough for smaller screens.
 
 // Function Implementation
 
@@ -118,7 +126,7 @@ bool SDL2_RenderParty_Init()
     {
         return false;
     }
-    for( int i = 0; i <sdl_party_max_vertex_count; i++ )
+    for( int i = 0; i <sdl_party_max_vertex_count; i+= 1 )
     {
         SDL_RenderParty_Vertex_List[i].color.r = SDL_RenderParty_Vertex_List[i].color.g = SDL_RenderParty_Vertex_List[i].color.b = SDL_RenderParty_Vertex_List[i].color.a = 255;
     }
@@ -131,9 +139,7 @@ bool SDL2_RenderParty_Quit()
     return true;
 }
 
-/*
-Math Related Operations
-*/
+//Math Related Operations
 
 float SDL2_RenderParty_LengthdirX( float length, float angle  )
 {
@@ -148,6 +154,11 @@ float SDL2_RenderParty_LengthdirY( float length, float angle )
 /*
 Now onto the render operations that call SDL_RenderGeometry.
 */
+
+bool SDL_RenderParty_Circle( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int circle_radius, SDL_Color * circle_colour, int alpha, float start_angle, int texture_effect )
+{
+    return SDL_RenderParty_Polygon( renderer, tex, pos, circle_radius* 2.f, SDL2_Party_Circle_Points, circle_colour, alpha, start_angle, texture_effect, 0  );
+}
 
 //This function assumes there are at least 4 vertices
 bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, bool show_colors, bool update_tex_cords  )
@@ -185,7 +196,7 @@ bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_V
 
     if( show_colors )
     {
-        for( int i_col =0; i_col < 4; i_col++ )
+        for( int i_col =0; i_col < 4; i_col+= 1 )
         {
             vert[i_col].color.r = vertices[i_col].color.r;
             vert[i_col].color.g = vertices[i_col].color.g;
@@ -213,146 +224,6 @@ bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_V
     }
 }
 
-//int returns the amount of indices were rendered
-int SDL_RenderParty_Strips(SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, int num_vertices, bool is_closed , int texture_effect, int start_vertice_pos  )
-{
-    if( start_vertice_pos < 0 )
-    {
-        start_vertice_pos = 0;
-    }
-
-    if( num_vertices < 3)
-    {
-        return 0;
-    }
-    else if( num_vertices == 3)
-    {
-        SDL_RenderGeometry(renderer, tex, vertices, num_vertices, NULL, 0);
-        return 3;
-    }
-
-    unsigned int estimated_indices = 3 + (num_vertices-3)*3;
-    if( is_closed)
-    {
-        //add 3 more indices for connecting triangle
-        estimated_indices += 3;
-    }
-    int new_indices[ estimated_indices];
-
-    SDL_FPoint tex_coords_default[4];
-    tex_coords_default[0].x = 0;
-    tex_coords_default[0].y = 0;
-
-
-    tex_coords_default[1].x = 1;
-    tex_coords_default[1].y = 0;
-
-    tex_coords_default[2].x = 1;
-    tex_coords_default[2].y = 1;
-
-    tex_coords_default[3].x = 0;
-    tex_coords_default[3].y = 1;
-
-    int i_vert_place = 0;
-
-    while(num_vertices >= sdl_party_max_vertex_count/3 )
-    {
-       SDL_RenderParty_Strips( renderer, tex,  vertices, sdl_party_max_vertex_count -1, is_closed , texture_effect, i_vert_place  );
-       num_vertices -= sdl_party_max_vertex_count-1;
-       i_vert_place += sdl_party_max_vertex_count -1;
-    }
-
-    int vert_pos_offset = start_vertice_pos;
-
-    for( int i_vert = 0; i_vert < num_vertices; i_vert++ )
-    {
-        SDL_RenderParty_Vertex_List[i_vert].color.r = vertices[vert_pos_offset].color.r;
-        SDL_RenderParty_Vertex_List[i_vert].color.g = vertices[vert_pos_offset].color.g;
-        SDL_RenderParty_Vertex_List[i_vert].color.b = vertices[vert_pos_offset].color.b;
-        SDL_RenderParty_Vertex_List[i_vert].color.a = vertices[vert_pos_offset].color.a;
-        SDL_RenderParty_Vertex_List[i_vert].position.x = vertices[vert_pos_offset].position.x;
-        SDL_RenderParty_Vertex_List[i_vert].position.y = vertices[vert_pos_offset].position.y;
-
-        if( tex != NULL )
-        {
-            switch( texture_effect )
-            {
-                case sdl_partyeffect_additive:
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = (float)i_vert/(float)num_vertices;
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = (float)i_vert/(float)num_vertices;
-                break;
-
-                case sdl_partyeffect_subtractive:
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = 1.f - (float)i_vert/(float)num_vertices;
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 1.f -(float)i_vert/(float)num_vertices;
-                break;
-
-                case sdl_partyeffect_bottom_up:
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x =  (float)i_vert/(float)num_vertices;
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 1.f -(float)i_vert/(float)num_vertices;
-                break;
-
-                case sdl_partyeffect_inverted:
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x =  1.f-(float)i_vert/(float)num_vertices;
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = (float)i_vert/(float)num_vertices;
-                break;
-
-                case sdl_partyeffect_full_inverted:
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = tex_coords_default[ num_vertices - i_vert_place -1].x ;
-                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = tex_coords_default[ num_vertices - i_vert_place -1].y ;
-                break;
-
-                default:
-                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = tex_coords_default[i_vert_place].x ;
-                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = tex_coords_default[i_vert_place].y ;
-                break;
-            }
-        }
-        else
-        {
-            SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = 0;
-            SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 0;
-        }
-        i_vert_place++;
-        vert_pos_offset++;
-        if( i_vert_place >=4 )
-        {
-            i_vert_place = 0;
-        }
-    }
-
-    int i_vert = 3;
-
-
-    new_indices[0] = 0;
-    new_indices[1] = 1;
-    new_indices[2] = 2;
-
-    int index_pos = 3;
-    while(  i_vert < num_vertices )
-    {
-        new_indices[index_pos] = i_vert ;
-        new_indices[index_pos+1] = i_vert -1;
-        new_indices[index_pos+2] = i_vert -2;
-        i_vert++;
-        index_pos += 3;
-    }
-    if( is_closed )
-    {
-        new_indices[index_pos] = num_vertices  -2;
-        new_indices[index_pos+1] = num_vertices -1;
-        new_indices[index_pos+2] = 0;
-    }
-    if( tex != NULL )
-    {
-        SDL_RenderGeometry(renderer, tex, SDL_RenderParty_Vertex_List, num_vertices, new_indices, estimated_indices );
-    }
-    else
-    {
-        SDL_RenderGeometry(renderer, NULL, SDL_RenderParty_Vertex_List, num_vertices,  new_indices, estimated_indices );
-    }
-    return estimated_indices;
-}
 
 int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex *vertices, int num_vertices, int texture_effect, int start_vertice_pos )
 {
@@ -390,7 +261,31 @@ int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Ve
     }
 
     int vert_pos_offset = start_vertice_pos;
-    for( int i_vert = 0; i_vert < num_vertices; i_vert++ )
+
+    float found_max_w = 0;
+    float found_max_h = 0;
+
+    //Expensive to do a double-loop and comparision perhaps...
+    if( texture_effect == sdl_partyeffect_texture_mapped )
+    {
+        for( int i_tex_vert = 0; i_tex_vert < num_vertices; i_tex_vert+= 1 )
+        {
+            if( vertices[vert_pos_offset].position.x > found_max_w )
+            {
+                found_max_w = vertices[vert_pos_offset].position.x;
+            }
+
+            if( vertices[vert_pos_offset].position.y > found_max_h )
+            {
+                found_max_h = vertices[vert_pos_offset].position.y;
+            }
+            vert_pos_offset+= 1;
+        }
+
+    }
+
+    vert_pos_offset = start_vertice_pos;
+    for( int i_vert = 0; i_vert < num_vertices; i_vert+= 1 )
     {
         SDL_RenderParty_Vertex_List[i_vert].position.x = vertices[vert_pos_offset].position.x;
         SDL_RenderParty_Vertex_List[i_vert].position.y = vertices[vert_pos_offset].position.y;
@@ -439,7 +334,7 @@ int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Ve
                     {
                         SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = tex_coords_default[quad_position].x ;
                         SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = tex_coords_default[quad_position].y ;
-                        quad_position++;
+                        quad_position+= 1;
                         if( quad_position >= 4 )
                         {
                             quad_position = 0;
@@ -451,15 +346,41 @@ int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Ve
                         SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = (float)(i_vert)/(float)(num_vertices);
                     }
                 break;
+                case sdl_partyeffect_texture_mapped:
+                    if( i_vert_place == 0 )
+                    {
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = 0.5f;
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 0.5f;
+                    }
+                    else
+                    {
+                        if( found_max_w == 0)
+                        {
+                            SDL_RenderParty_Vertex_List[i_vert].tex_coord.x =  0.5f;
+                        }
+                        else
+                        {
+                            SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = (float)(vertices[i_vert_place].position.x / found_max_w);
+                        }
+                        if( found_max_h == 0)
+                        {
+                            SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 0.5f;
+                        }
+                        else
+                        {
+                            SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = (float)(vertices[i_vert_place].position.y / found_max_h);
+                        }
+                    }
+                break;
                 default:
                     SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = vertices[i_vert].tex_coord.x ;
                     SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = vertices[i_vert].tex_coord.y ;
                 break;
             }
         }
-        i_vert_place++;
-        vert_pos_offset++;
-        if( i_vert_place >=4 )
+        i_vert_place+= 1;
+        vert_pos_offset+= 1;
+        if( i_vert_place >=3 )
         {
             i_vert_place = 0;
         }
@@ -499,8 +420,8 @@ int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Ve
         new_indices[index_pos+1] = i_vert -1;
         new_indices[index_pos+2] = i_vert;
 
-        i_vert++;
-        index_pos+=3;
+        i_vert+= 1;
+        index_pos+= 3;
     }
     if( tex != NULL )
     {
@@ -563,7 +484,7 @@ bool SDL_RenderParty_Polygon( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Po
     theta+=step;
     tex_coord_angle += step;
 
-    for( arc_i = 0; arc_i < point_count; arc_i++)
+    for( arc_i = 0; arc_i < point_count; arc_i+= 1)
     {
         vx = pos.x + SDL2_RenderParty_LengthdirX( shape_length/2.f, theta);
         vy = pos.y + SDL2_RenderParty_LengthdirY( shape_length/2.f, theta);
@@ -592,4 +513,205 @@ bool SDL_RenderParty_Polygon( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Po
     return true;
 }
 
-#endif // sdl2_renderparty_implementation
+bool SDL_RenderParty_SetCirclePoints( int new_circle_points )
+{
+    if( new_circle_points < SDL2_RENDERPARTY_CIRCLE_POINT_MIN )
+    {
+        return false;
+    }
+    SDL2_Party_Circle_Points = new_circle_points;
+    return true;
+}
+
+//int returns the amount of indices were rendered
+int SDL_RenderParty_Strips(SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, int num_vertices, bool is_closed , int texture_effect, int start_vertice_pos  )
+{
+    if( start_vertice_pos < 0 )
+    {
+        start_vertice_pos = 0;
+    }
+
+    if( num_vertices < 3)
+    {
+        return 0;
+    }
+    else if( num_vertices == 3)
+    {
+        SDL_RenderGeometry(renderer, tex, vertices, num_vertices, NULL, 0);
+        return 3;
+    }
+
+    unsigned int estimated_indices = 3 + (num_vertices-3)*3;
+    if( is_closed)
+    {
+        //add 3 more indices for connecting triangle
+        estimated_indices += 3;
+    }
+    int new_indices[ estimated_indices];
+
+    SDL_FPoint tex_coords_default[4];
+    tex_coords_default[0].x = 0;
+    tex_coords_default[0].y = 0;
+
+
+    tex_coords_default[1].x = 1;
+    tex_coords_default[1].y = 0;
+
+    tex_coords_default[2].x = 1;
+    tex_coords_default[2].y = 1;
+
+    tex_coords_default[3].x = 0;
+    tex_coords_default[3].y = 1;
+
+    int i_vert_place = 0;
+
+
+
+    while(num_vertices >= sdl_party_max_vertex_count/3 )
+    {
+       SDL_RenderParty_Strips( renderer, tex,  vertices, sdl_party_max_vertex_count -1, is_closed , texture_effect, i_vert_place  );
+       num_vertices -= sdl_party_max_vertex_count-1;
+       i_vert_place += sdl_party_max_vertex_count -1;
+    }
+
+    int vert_pos_offset = start_vertice_pos;
+
+
+    float found_max_w = 0;
+    float found_max_h = 0;
+
+    //Expensive to do a double-loop and comparision perhaps...
+    if( texture_effect == sdl_partyeffect_texture_mapped )
+    {
+        for( int i_tex_vert = 0; i_tex_vert < num_vertices; i_tex_vert+= 1 )
+        {
+            if( vertices[vert_pos_offset].position.x > found_max_w )
+            {
+                found_max_w = vertices[vert_pos_offset].position.x;
+            }
+
+            if( vertices[vert_pos_offset].position.y > found_max_h )
+            {
+                found_max_h = vertices[vert_pos_offset].position.y;
+            }
+            vert_pos_offset+= 1;
+        }
+
+    }
+
+    vert_pos_offset = start_vertice_pos;
+    for( int i_vert = 0; i_vert < num_vertices; i_vert += 1 )
+    {
+        SDL_RenderParty_Vertex_List[i_vert].color.r = vertices[vert_pos_offset].color.r;
+        SDL_RenderParty_Vertex_List[i_vert].color.g = vertices[vert_pos_offset].color.g;
+        SDL_RenderParty_Vertex_List[i_vert].color.b = vertices[vert_pos_offset].color.b;
+        SDL_RenderParty_Vertex_List[i_vert].color.a = vertices[vert_pos_offset].color.a;
+        SDL_RenderParty_Vertex_List[i_vert].position.x = vertices[vert_pos_offset].position.x;
+        SDL_RenderParty_Vertex_List[i_vert].position.y = vertices[vert_pos_offset].position.y;
+
+        if( tex != NULL )
+        {
+            switch( texture_effect )
+            {
+                case sdl_partyeffect_additive:
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = (float)i_vert/(float)num_vertices;
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = (float)i_vert/(float)num_vertices;
+                break;
+
+                case sdl_partyeffect_subtractive:
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = 1.f - (float)i_vert/(float)num_vertices;
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 1.f -(float)i_vert/(float)num_vertices;
+                break;
+
+                case sdl_partyeffect_bottom_up:
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x =  (float)i_vert/(float)num_vertices;
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 1.f -(float)i_vert/(float)num_vertices;
+                break;
+
+                case sdl_partyeffect_inverted:
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x =  1.f-(float)i_vert/(float)num_vertices;
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = (float)i_vert/(float)num_vertices;
+                break;
+
+                case sdl_partyeffect_full_inverted:
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = tex_coords_default[ num_vertices - i_vert_place -1].x ;
+                    SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = tex_coords_default[ num_vertices - i_vert_place -1].y ;
+                break;
+
+                case sdl_partyeffect_texture_mapped:
+                    if( found_max_w == 0)
+                    {
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = tex_coords_default[i_vert_place].x ;
+
+                    }
+                    else
+                    {
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = vertices[vert_pos_offset].position.x / found_max_w;
+                    }
+                    if( found_max_h == 0)
+                    {
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = tex_coords_default[i_vert_place].y ;
+                    }
+                    else
+                    {
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = vertices[vert_pos_offset].position.y / found_max_h;
+                    }
+                break;
+
+                default:
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = tex_coords_default[i_vert_place].x ;
+                        SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = tex_coords_default[i_vert_place].y ;
+                break;
+            }
+        }
+        else
+        {
+            SDL_RenderParty_Vertex_List[i_vert].tex_coord.x = 0;
+            SDL_RenderParty_Vertex_List[i_vert].tex_coord.y = 0;
+        }
+        i_vert_place+= 1;
+        vert_pos_offset+= 1 ;
+        if( i_vert_place >=3 )
+        {
+            i_vert_place = 0;
+        }
+    }
+
+    int i_vert = 3;
+
+
+    new_indices[0] = 0;
+    new_indices[1] = 1;
+    new_indices[2] = 2;
+
+    int index_pos = 3;
+    while(  i_vert < num_vertices )
+    {
+        new_indices[index_pos] = i_vert ;
+        new_indices[index_pos+1] = i_vert -1;
+        new_indices[index_pos+2] = i_vert -2;
+        i_vert+= 1 ;
+        index_pos += 3;
+    }
+    if( is_closed )
+    {
+        new_indices[index_pos] = num_vertices  -2;
+        new_indices[index_pos+1] = num_vertices -1;
+        new_indices[index_pos+2] = 0;
+    }
+    if( tex != NULL )
+    {
+        SDL_RenderGeometry(renderer, tex, SDL_RenderParty_Vertex_List, num_vertices, new_indices, estimated_indices );
+    }
+    else
+    {
+        SDL_RenderGeometry(renderer, NULL, SDL_RenderParty_Vertex_List, num_vertices,  new_indices, estimated_indices );
+    }
+    return estimated_indices;
+}
+
+#endif // SDL2_RENDERPARTY_IMPLEMENTATION
+
+
+
+

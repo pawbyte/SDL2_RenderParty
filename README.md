@@ -6,14 +6,33 @@ A simple library of extending the current functionality of SDL2 without having t
 
 Example Project of adding more sides to a rotating polygon rendered drawn with a white color:
 
+
+# As of V 1.1.3 and higher, SDL2_RenderParty is now a single header library!
+
+What this means is when including in your projects include in in your .c or .cpp files instead of your .h files for enabling implementation.
+
+## These two lines is all you need:
+
+```c
+#define SDL2_RENDERPARTY_IMPLEMENTATION //Allows the implementation of functions to be executed, withhout this line you may experience many compiler errors! 
+#include "sdl2_renderparty.h" //Includes the SDL2_RenderParty single file library ( Written in C, compatabile with C++ ) 
+```
+
+
+## Screenshots: 
 Rendered White Polygon with sides increasing:
 ![image](https://raw.githubusercontent.com/pawbyte/SDL2_Render_Party/main/examples/SDL2_Render_Party_White_Polygon_Test.gif)
+
+
+
+Example Project Running on FreeBSD( Thanks high_on_tanor for testing):
+![image](https://github.com/pawbyte/SDL2_RenderParty/blob/main/images/sdl2_renderparty_example_screenshot_freebsd.png)
 
 Rendered Texture as polygon with sides increasing:
 ![image](https://github.com/pawbyte/SDL2_RenderParty/blob/main/examples/sdl2_render_party_mk_spinner_polygon.gif?raw=true)
 
 
-Functions:
+## Functions:
 
 bool **SDL2_RenderParty_Init();  //optional   
   
@@ -44,15 +63,4 @@ float **SDL2_RenderParty_LengthdirY**( float length, float angle  );
 // tex can be left NULL to render colored TriangleFans. If not left blank, please see the texture_effect which is based on the sdl_partyeffect enums   
 **bool SDL_RenderParty_Polygon**( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha, float start_angle, int texture_effect  );   
 
-
-## Reporting Issues
-
-Using Github feel free to just [create issues](https://github.com/pawbyte/SDL2_RenderParty/issues) and we will address any problems concerns or feature requests.
-
-
-## Donate to make SDL2_RenderParty greater
-=========================================
-Work on this library is not possible without funding. The amount of time it takes to update the codebases, create examples, tutorials and more is quite expensive. Please consider either a one-time or monthly donation to keep this engine going and more frequently updated. 
-
-We have a [Patreon Page](https://www.patreon.com/pawbyte?ty=h) that you can help fund future developments of Pencil Engine and to help us kickstart new projects!
   

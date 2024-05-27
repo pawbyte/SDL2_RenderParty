@@ -44,4 +44,15 @@ float **SDL2_RenderParty_LengthdirY**( float length, float angle  );
 // tex can be left NULL to render colored TriangleFans. If not left blank, please see the texture_effect which is based on the sdl_partyeffect enums   
 **bool SDL_RenderParty_Polygon**( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha, float start_angle, int texture_effect  );   
 
+
+## Reporting Issues
+
+Using Github feel free to just [create issues](https://github.com/pawbyte/SDL2_RenderParty/issues) and we will address any problems concerns or feature requests.
+
+
+## Donate to make SDL2_RenderParty greater
+=========================================
+Work on this library is not possible without funding. The amount of time it takes to update the codebases, create examples, tutorials and more is quite expensive. Please consider either a one-time or monthly donation to keep this engine going and more frequently updated. 
+
+We have a [Patreon Page](https://www.patreon.com/pawbyte?ty=h) that you can help fund future developments of Pencil Engine and to help us kickstart new projects!
   

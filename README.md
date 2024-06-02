@@ -39,7 +39,7 @@ Rendered Texture as polygon with sides increasing:
 **bool SDL2_RenderParty_Quit**(); //optional   
   
 //Gets the Directional Length on the X Axis , used in other calls  
-**float SDL2_RenderParty_LengthdirX( float length, float angle  );  
+**float SDL2_RenderParty_LengthdirX**( float length, float angle  );  
   
 //Gets the Directional Length on the Y Axis , used in other calls   
 **float SDL2_RenderParty_LengthdirY**( float length, float angle  );   

@@ -34,15 +34,15 @@ Rendered Texture as polygon with sides increasing:
 
 ## Functions:
 
-bool **SDL2_RenderParty_Init();  //optional   
+**bool SDL2_RenderParty_Init**();  //optional   
   
-bool **SDL2_RenderParty_Quit(); //optional   
+**bool SDL2_RenderParty_Quit**(); //optional   
   
 //Gets the Directional Length on the X Axis , used in other calls  
-float **SDL2_RenderParty_LengthdirX( float length, float angle  );  
+**float SDL2_RenderParty_LengthdirX**( float length, float angle  );  
   
 //Gets the Directional Length on the Y Axis , used in other calls   
-float **SDL2_RenderParty_LengthdirY**( float length, float angle  );   
+**float SDL2_RenderParty_LengthdirY**( float length, float angle  );   
   
   
 // Renders a texture or rotated rectangle based on 4 SDL_Vertices, you may toggle colors on or off and correct the inputted texture coordinates   

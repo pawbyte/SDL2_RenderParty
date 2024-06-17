@@ -1,3 +1,7 @@
+Changelog Notes 1.1.4:
+-Added SDL_RenderParty_Oval() function
+
+
 Changelog Notes 1.1.3:
 -Added sdl_partyeffect_texture_mapped enum, not completed for functionality
 -Added extern SDL2_Party_Circle_Points for keeping track of how detailed circle render call is.

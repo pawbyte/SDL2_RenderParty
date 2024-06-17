@@ -8,6 +8,9 @@ obj/
 RenderParty_Example_Project/
 .vscode/
 
+# CodeBlocks Depend file 
+*.depend
+
 # Prerequisites
 *.d
 

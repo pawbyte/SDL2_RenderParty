@@ -41,7 +41,7 @@ extern "C" {
 
     #define SDL2_RENDERPARTY_VERSION_MAJOR 1
     #define SDL2_RENDERPARTY_MINOR 1
-    #define SDL2_RENDERPARTY_PATCH 3
+    #define SDL2_RENDERPARTY_PATCH 4
 
     #define SDL2_RENDERPARTY_CIRCLE_POINT_MIN 4
 
@@ -95,6 +95,8 @@ extern "C" {
     float SDL2_RenderParty_LengthdirX( float length, float angle  );
     float SDL2_RenderParty_LengthdirY( float length, float angle  );
     bool SDL_RenderParty_Circle( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int circle_radius, SDL_Color * circle_colour, int alpha, float start_angle, int texture_effect );
+    bool SDL_RenderParty_Oval( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int x_radius,int y_radius,SDL_Color * oval_colour, int alpha, float start_angle, int texture_effect );
+
     int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, int num_vertices, int texture_effect , int start_vertice_pos);
     bool SDL_RenderParty_Polygon( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha, float start_angle, int texture_effect, int start_vertice_pos );
     bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, bool show_colors, bool update_tex_cords );
@@ -159,71 +161,6 @@ bool SDL_RenderParty_Circle( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Poi
 {
     return SDL_RenderParty_Polygon( renderer, tex, pos, circle_radius* 2.f, SDL2_Party_Circle_Points, circle_colour, alpha, start_angle, texture_effect, 0  );
 }
-
-//This function assumes there are at least 4 vertices
-bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, bool show_colors, bool update_tex_cords  )
-{
-    //This function assumes there are at least 4 vertices
-    SDL_Vertex vert[4];
-
-
-    vert[0].position.x = vertices[0].position.x;
-    vert[0].position.y = vertices[0].position.y;
-
-
-    vert[1].position.x = vertices[1].position.x;
-    vert[1].position.y = vertices[1].position.y;
-
-
-    vert[2].position.x = vertices[2].position.x;
-    vert[2].position.y = vertices[2].position.y;
-
-    vert[3].position.x = vertices[3].position.x;
-    vert[3].position.y = vertices[3].position.y;
-
-    //draw the entire texture, otherwise use previous vertice positions
-    if( update_tex_cords )
-    {
-        vert[0].tex_coord.x = 0;
-        vert[0].tex_coord.y = 0;
-        vert[1].tex_coord.x = 1;
-        vert[1].tex_coord.y = 0;
-        vert[2].tex_coord.x = 1;
-        vert[2].tex_coord.y = 1;
-        vert[3].tex_coord.x = 0;
-        vert[3].tex_coord.y = 1;
-    }
-
-    if( show_colors )
-    {
-        for( int i_col =0; i_col < 4; i_col+= 1 )
-        {
-            vert[i_col].color.r = vertices[i_col].color.r;
-            vert[i_col].color.g = vertices[i_col].color.g;
-            vert[i_col].color.b = vertices[i_col].color.b;
-            vert[i_col].color.a = vertices[i_col].color.a;
-        }
-    }
-
-
-    int new_indices[ 6];
-    new_indices[0] = 1;
-    new_indices[1] = 2;
-    new_indices[2] = 3;
-    new_indices[3] = 0;
-    new_indices[4] = 1;
-    new_indices[5] = 3;
-
-    if( update_tex_cords )
-    {
-        return (SDL_RenderGeometry(renderer, tex, vert, 4, new_indices, 6 ) == 0 );
-    }
-    else
-    {
-        return (SDL_RenderGeometry(renderer, tex, vertices, 4, new_indices, 6 ) == 0 );
-    }
-}
-
 
 int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex *vertices, int num_vertices, int texture_effect, int start_vertice_pos )
 {
@@ -433,6 +370,152 @@ int SDL_RenderParty_Fans( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Ve
     }
     return estimated_indices;
 }
+
+bool SDL_RenderParty_Oval( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int x_radius,int y_radius,SDL_Color * oval_colour, int alpha, float start_angle, int texture_effect )
+{
+    int point_count = SDL2_Party_Circle_Points;
+    if( renderer == NULL || x_radius < 1  || y_radius < 1 || point_count < 3 )
+    {
+        return false;
+    }
+
+    start_angle -= 90.f;
+    float end_angle = start_angle + 360.f;
+
+    start_angle = start_angle * sdl_renderparty_math_radians_multiplier;
+    end_angle = end_angle * sdl_renderparty_math_radians_multiplier;
+
+    float step = (end_angle - start_angle) / (float)(point_count);
+
+    float theta = start_angle;
+
+    float vx  = 0,  vy = 0;
+
+    int arc_i = 0;
+    point_count+=2;
+    SDL_Vertex line_render_points[ point_count ];
+
+    vx = pos.x;
+    vy = pos.y;
+
+    float tex_coord_angle = 0; //0.f;
+    line_render_points[ 0 ].position.x = pos.x;
+    line_render_points[ 0 ].position.y = pos.y;
+
+    if( oval_colour != NULL )
+    {
+        line_render_points[ 0 ].color.r = oval_colour->r;
+        line_render_points[ 0 ].color.g = oval_colour->g;
+        line_render_points[ 0 ].color.b = oval_colour->b;
+    }
+    else
+    {
+        line_render_points[0].color.r = 255;
+        line_render_points[0].color.g = 255;
+        line_render_points[0].color.b = 255;
+    }
+
+    line_render_points[ 0 ].color.a = alpha;
+    line_render_points[ 0 ].tex_coord.x = 0.5f;
+    line_render_points[ 0 ].tex_coord.y = 0.5f;
+
+    theta+=step;
+    tex_coord_angle += step;
+
+    for( arc_i = 0; arc_i < point_count; arc_i+= 1)
+    {
+        vx = pos.x + SDL2_RenderParty_LengthdirX( x_radius/2.f, theta);
+        vy = pos.y + SDL2_RenderParty_LengthdirY( y_radius/2.f, theta);
+        line_render_points[arc_i].position.x = vx;
+        line_render_points[arc_i].position.y = vy;
+        if( oval_colour != NULL )
+        {
+            line_render_points[arc_i].color.r = oval_colour->r;
+            line_render_points[arc_i].color.g = oval_colour->g;
+            line_render_points[arc_i].color.b = oval_colour->b;
+        }
+        else
+        {
+            line_render_points[arc_i].color.r = 255;
+            line_render_points[arc_i].color.g = 255;
+            line_render_points[arc_i].color.b = 255;
+        }
+        line_render_points[arc_i].color.a = alpha;
+
+        line_render_points[arc_i].tex_coord.x = 0.5f + SDL2_RenderParty_LengthdirX( 0.5f, tex_coord_angle);
+        line_render_points[arc_i].tex_coord.y = 0.5f + SDL2_RenderParty_LengthdirY( 0.5f, tex_coord_angle);
+        theta += step;
+        tex_coord_angle += step;
+    }
+    SDL_RenderParty_Fans( renderer, tex, line_render_points, point_count, texture_effect, 0 );
+    return true;
+}
+
+//This function assumes there are at least 4 vertices
+bool SDL_RenderParty_Quad( SDL_Renderer *renderer, SDL_Texture *tex, const SDL_Vertex * vertices, bool show_colors, bool update_tex_cords  )
+{
+    //This function assumes there are at least 4 vertices
+    SDL_Vertex vert[4];
+
+
+    vert[0].position.x = vertices[0].position.x;
+    vert[0].position.y = vertices[0].position.y;
+
+
+    vert[1].position.x = vertices[1].position.x;
+    vert[1].position.y = vertices[1].position.y;
+
+
+    vert[2].position.x = vertices[2].position.x;
+    vert[2].position.y = vertices[2].position.y;
+
+    vert[3].position.x = vertices[3].position.x;
+    vert[3].position.y = vertices[3].position.y;
+
+    //draw the entire texture, otherwise use previous vertice positions
+    if( update_tex_cords )
+    {
+        vert[0].tex_coord.x = 0;
+        vert[0].tex_coord.y = 0;
+        vert[1].tex_coord.x = 1;
+        vert[1].tex_coord.y = 0;
+        vert[2].tex_coord.x = 1;
+        vert[2].tex_coord.y = 1;
+        vert[3].tex_coord.x = 0;
+        vert[3].tex_coord.y = 1;
+    }
+
+    if( show_colors )
+    {
+        for( int i_col =0; i_col < 4; i_col+= 1 )
+        {
+            vert[i_col].color.r = vertices[i_col].color.r;
+            vert[i_col].color.g = vertices[i_col].color.g;
+            vert[i_col].color.b = vertices[i_col].color.b;
+            vert[i_col].color.a = vertices[i_col].color.a;
+        }
+    }
+
+
+    int new_indices[ 6];
+    new_indices[0] = 1;
+    new_indices[1] = 2;
+    new_indices[2] = 3;
+    new_indices[3] = 0;
+    new_indices[4] = 1;
+    new_indices[5] = 3;
+
+    if( update_tex_cords )
+    {
+        return (SDL_RenderGeometry(renderer, tex, vert, 4, new_indices, 6 ) == 0 );
+    }
+    else
+    {
+        return (SDL_RenderGeometry(renderer, tex, vertices, 4, new_indices, 6 ) == 0 );
+    }
+}
+
+
 
 bool SDL_RenderParty_Polygon( SDL_Renderer * renderer, SDL_Texture * tex, SDL_Point pos, int shape_length , int point_count, SDL_Color * shape_colour, int alpha, float start_angle, int texture_effect, int start_vertice_pos  )
 {

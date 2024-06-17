@@ -48,6 +48,8 @@ int main(int argv, char** args)
     //Initialize the random number generator
     srand(time(NULL));
 
+    SDL_SetHint( SDL_HINT_RENDER_LINE_METHOD, "3");
+    SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "best");
     //First we initalize SDL2, your program may have more flags than this, but it should still work
     if( SDL_Init( SDL_INIT_VIDEO ) == -1 )
 	{
@@ -141,7 +143,8 @@ int main(int argv, char** args)
         render_triangle_mode_fans = 1,
         render_triangle_mode_quads = 2,
         render_triangle_mode_circle = 3,
-        render_triangle_mode_off = 4,
+        render_triangle_mode_oval = 4,
+        render_triangle_mode_off = 5,
     };
 
 
@@ -360,7 +363,10 @@ int main(int argv, char** args)
         {
             SDL_RenderParty_Circle( sdl_apprenderer, NULL, center_point, 256, &filled_poly_color, 96, shaped_angle, gfx_effect );
         }
-
+         else if( triangle_mode_state == render_triangle_mode_oval)
+        {
+            SDL_RenderParty_Oval( sdl_apprenderer, NULL, center_point, 256,96, &filled_poly_color, 96, shaped_angle, gfx_effect );
+        }
 
         /*Ok lets render our next polygon bound to the mouse coordinates
         This polygon uses the shape_size for it's radius, the shape_point_count for it's amount of sides
